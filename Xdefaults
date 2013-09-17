@@ -1,0 +1,35 @@
+URxvt.depth:32
+URxvt.transparent:True
+URxvt.tintColor:Blue
+URxvt.shading:40
+URxvt.foreground:White
+!URxvt.background:Blue
+!URxvt.background:[80]#000000
+URxvt.background:rgba:0000/0000/0000/bbbb
+
+URxvt.colorBD:yellow
+URxvt.colorUL:green
+
+URxvt.scrollBar:True
+URxvt.scrollBar_right:True
+URxvt.scrollBar_floating:False
+
+!URxvt.rxvt_menu:/etc/X11/urxvt.menu
+!Urxvt.mfont:xft:WenQuanYi Zen Hei-17:Normal
+URxvt.font:xft:Bitstream Vera Sans Mono-12,xft:WenQuanYi Bitmap Song-12
+URxvt.boldFont:xft:Bitstream Vera Sans Mono-12:Normal,xft:WenQuanYi Bitmap Song-12:Normal
+Urxvt.preeditType:Root
+! Urxvt.imLocale:zh_CN.UTF-8
+Urxvt.imLocale:en_US.UTF-8
+Urxvt.imFont:fixed
+Urxvt.inputMethod:ibus
+
+URxvt.color4:RoyalBlue
+URxvt.color12:RoyalBlue
+
+!URxvt.perl-ext-common: default,tabbed
+
+!Urxvt.perl-lib: ~/.urxvt-perllib
+Urxvt.perl-ext-common: default, clipboard 
+!, vim-scrollback
+!Urxvt.vim-scrollback-paste: none

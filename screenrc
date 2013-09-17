@@ -1,0 +1,21 @@
+hardstatus alwayslastline
+hardstatus string '%{=b}%{b}%-w%{.BW}%1[%n %t]%{-}%+w% %=%{G}%C%A, %Y-%m-%d'
+
+termcapinfo xterm|rxvt ti@:te@
+
+autodetach on
+
+altscreen on
+
+msgwait 2
+version
+
+startup_message off
+
+vbell off
+
+bindkey -k k; title
+bindkey -k F1 prev
+bindkey -k F2 next
+
+
