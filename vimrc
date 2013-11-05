@@ -697,6 +697,7 @@ let g:fencview_auto_patterns='*.txt,*.htm{l\=},*.php,*.c,*.py'
 
 " TODO
 " Latex Suite
+Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
 
 " Autoupdate all plugins
 " autocmd VimEnter * exe ":BundleInstall!\<CR>"
