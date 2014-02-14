@@ -1,0 +1,6 @@
+<+input('s:name?!', 'Name: ')+>
+idef <+s:name+>(<++>):
+    """
+    <+DOC+>
+    """
+    <++>

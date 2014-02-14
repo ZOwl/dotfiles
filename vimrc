@@ -123,19 +123,19 @@ set mat=2
 "Highlight search things
 set hlsearch
 
-  """"""""""""""""""""""""""""""
-  " Statusline
-  """"""""""""""""""""""""""""""
-  "Always hide the statusline
-  set laststatus=2
+""""""""""""""""""""""""""""""
+" Statusline
+""""""""""""""""""""""""""""""
+"Always hide the statusline
+set laststatus=2
 
-  function! CurDir()
-     let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
-     return curdir
-  endfunction
+function! CurDir()
+   let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
+   return curdir
+endfunction
 
-  "Format the statusline
-  set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+"Format the statusline
+set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 """"""""""""""""""""""""""""""
 " Visual
@@ -175,15 +175,15 @@ map <right> :bn<cr>
 map <left> :bp<cr>
 
 "Tab configuration
-map <leader>tn :tabnew .<cr>
 map <leader>te :tabedit
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
-map <F5> :tabprevious<cr>
-map <F6> :tabnext<cr>
-imap <leader>tn :tabnew .</cr>i
-imap <F5> <ESC>:tabprevious<CR>i
-imap <F6> <ESC>:tabnext<CR>i
+map <leader>tn :tabnew .<cr>
+map <C-l> :tabn<cr>
+map <C-h> :tabp<cr>
+map <C-n> :tabnew<cr>
+map <C-k> :bn<cr>
+map <C-j> :bp<cr>
 try
   set switchbuf=usetab
   set stal=2
@@ -362,10 +362,6 @@ set shiftwidth=2
 
 map <leader>t2 :set shiftwidth=2<cr>
 map <leader>t4 :set shiftwidth=4<cr>
-au FileType html,vim,actionscript,sh,scala,coffee,handlebars setl shiftwidth=2
-au FileType html,vim,actionscript,sh,scala,coffee,handlebars setl tabstop=2
-au FileType java,python setl shiftwidth=4
-au FileType java,python setl tabstop=4
 
 set smarttab
 set lbr
@@ -395,43 +391,16 @@ map <leader>sa zg
 map <leader>s? z=
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Template
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! LoadFileTemplate()
-  silent! 0r ~/.vim/templates/%:e.tmpl
-  syn match vimTemplateMarker "&lt;+.\++&gt;" containedin=All
-  hi vimTemplateMarker guifg=#67a42c guibg=#112300 gui=bold
-endfunction
-
-function! JumpToNextPlaceholder()
-  let old_query = getreg('/')
-  echo search("&lt;+.\++&gt;")
-  exec "norm! c/+&gt;/e\<cr>"
-  call setreg('/', old_query)
-endfunction
-
-" Generate file header with template
-autocmd BufNewFile * :call LoadFileTemplate()
-nnoremap <c-j> :call JumpToNextPlaceholder()<cr>a
-inoremap <c-j> <esc>:call JumpToNextPlaceholder()<cr>a</cr></esc></c-j></cr></c-j></cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Cope
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "For Cope
 map <silent> <leader><cr> :noh<cr>
 
 "Orginal for all
-map <leader>n :cn<cr>
+" map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 map <leader>c :botright cw 10<cr>
 map <c-u> <c-l><c-j>:q<cr>:botright cw 10<cr>
-
-""""""""""""""""""""""""""""""
-" Vim Grep
-""""""""""""""""""""""""""""""
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git'
-let Grep_Cygwin_Find = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
@@ -447,23 +416,6 @@ map <F2> :%s/\s*$//g<cr>:noh<cr>''
 
 "Super paste
 inoremap <C-v> <esc>:set paste<cr>mui<C-R>+<esc>mv'uV'v=:set nopaste<cr>
-
-"A function that inserts links & anchors on a TOhtml export.
-" Notice:
-" Syntax used is:
-" Link
-" Anchor
-function! SmartTOHtml()
-   TOhtml
-   try
-    %s/&quot;\s\+\*&gt; \(.\+\)</" <a href="#\1" style="color: cyan">\1<\/a></g
-    %s/&quot;\(-\|\s\)\+\*&gt; \(.\+\)</" \&nbsp;\&nbsp; <a href="#\2" style="color: cyan;">\2<\/a></g
-    %s/&quot;\s\+=&gt; \(.\+\)</" <a name="\1" style="color: #fff">\1<\/a></g
-   catch
-   endtry
-   exe ":write!"
-   exe ":bd"
-endfunction
 
 "A function for insert head message in source file
 function! AddHeadMsg()
@@ -504,7 +456,7 @@ Bundle "scrooloose/syntastic"
 
 " RoR
 Bundle "rails.vim"
-Bundle "taq/vim-rspec"
+Bundle "thoughtbot/vim-rspec"
 
 " CoffeeScript
 Bundle "kchmck/vim-coffee-script"
@@ -569,9 +521,6 @@ Bundle "pep8"
 let g:pep8_map='<leader>8'
 " Bundle "pyflakes"
 
-" Snippets
-Bundle "msanders/snipmate.vim"
-
 " Syntax highlight
 Bundle "cucumber.zip"
 Bundle "Markdown"
@@ -585,33 +534,6 @@ Bundle "fugitive.vim"
 Bundle "surround.vim"
 "Bundle "file-line"
 Bundle "Align"
-Bundle "neocomplcache"
-let g:NeoComplCache_DisableAutoComplete=1
-Bundle "SuperTab-continued."
-let g:SuperTabDefaultCompletionType="context"
-
-" FuzzyFinder
-Bundle "L9"
-Bundle "FuzzyFinder"
-let g:fuf_modesDisable = [] " {{{
-nnoremap <silent> <LocalLeader>h :FufHelp<CR>
-nnoremap <silent> <LocalLeader>2 :FufFileWithCurrentBufferDir<CR>
-nnoremap <silent> <LocalLeader>@ :FufFile<CR>
-nnoremap <silent> <LocalLeader>3 :FufBuffer<CR>
-nnoremap <silent> <LocalLeader>4 :FufDirWithCurrentBufferDir<CR>
-nnoremap <silent> <LocalLeader>$ :FufDir<CR>
-nnoremap <silent> <LocalLeader>5 :FufChangeList<CR>
-nnoremap <silent> <LocalLeader>6 :FufMruFile<CR>
-nnoremap <silent> <LocalLeader>7 :FufLine<CR>
-nnoremap <silent> <LocalLeader>8 :FufBookmark<CR>
-nnoremap <silent> <LocalLeader>* :FuzzyFinderAddBookmark<CR><CR>
-nnoremap <silent> <LocalLeader>9 :FufTaggedFile<CR>
-" " }}}
-
-" Ack
-Bundle "ack.vim"
-noremap <LocalLeader># "ayiw:Ack <C-r>a<CR>
-vnoremap <LocalLeader># "ay:Ack <C-r>a<CR>
 
 " Project
 Bundle "project.tar.gz"
@@ -619,14 +541,6 @@ Bundle "project.tar.gz"
 let g:proj_flags="imstg"
 " Project-adding-mappings
 nmap <leader>j :Project
-
-"Bundle 'amiorin/vim-project'
-"" before call project#rc()
-"let g:project_enable_welcome = 0
-"" if you want the NERDTree integration.
-"let g:project_use_nerdtree = 1
-"set rtp+=~/.vim/bundle/vim-project/
-"call project#rc("~/Workspace")
 
 " Indent Object
 Bundle "michaeljsmith/vim-indent-object"
@@ -648,18 +562,17 @@ let Tlist_Exit_OnlyWindow=1
 let Tlist_Use_Right_Window=1
 
 " NerdTree
-Bundle "wycats/nerdtree"
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-noremap <Leader>[ :NERDTreeToggle<CR>
+Bundle 'scrooloose/nerdtree'
+
+" vim-nerdtree-tabs
+Bundle 'jistr/vim-nerdtree-tabs'
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 " NerdCommenter
 Bundle "ddollar/nerdcommenter"
 
 " BufExplorer
 Bundle "bufexplorer.zip"
-
-" TabBar
-" Bundle "TabBar"
 
 " VimCommander
 Bundle "vimcommander"
@@ -679,10 +592,9 @@ map <leader>td <Plug>TaskList
 " tskeleton
 Bundle "https://github.com/tomtom/tlib_vim.git"
 Bundle "https://github.com/tomtom/tskeleton_vim.git"
-au BufNewFile *.py 0r ~/.vim/skeletons/python.py | let IndentStyle = "python"
-"au BufNewFile *.py TSkeletonSetup python.py | let IndentStyle = "python"
-au BufNewFile *.sh 0r ~/.vim/skel/sh.skel | let IndentStyle = "sh"
-au BufNewFile *.c 0r ~/.vim/skel/c.skel | let IndentStyle = "c"
+au BufNewFile *.py 0r ~/.tskeleton/skeletons/python.py | let IndentStyle = "python"
+au BufNewFile *.sh 0r ~/.tskeleton/skel/sh.skel | let IndentStyle = "sh"
+au BufNewFile *.c 0r ~/.tskeleton/skel/c.skel | let IndentStyle = "c"
 
 " Conque
 " Bundle "Conque-Shell"
@@ -692,19 +604,50 @@ au BufNewFile *.c 0r ~/.vim/skel/c.skel | let IndentStyle = "c"
 
 " FencView
 Bundle 'FencView.vim'
+let g:fencview_autodetect = 0
+let g:fencview_checklines = 10
 nmap fenc :FencAutoDetect
 let g:fencview_auto_patterns='*.txt,*.htm{l\=},*.php,*.c,*.py'
 
-" TODO
 " Latex Suite
 Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+let g:tex_flavor='latex'
+set iskeyword+=:
+
+" rust
+Bundle 'wting/rust.vim'
+
+" YouCompleteMe
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'davidhalter/jedi'
+Bundle 'scrooloose/syntastic'
+let g:syntastic_ignore_files=[".*\.py$"]
+
+" UltiSnips
+Bundle 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger="<C-E>"
+
+" vim-snippets
+Bundle 'honza/vim-snippets'
+
+" vim-trailing-whitespace
+Bundle 'bronson/vim-trailing-whitespace'
+
+" vim-airline
+Bundle 'bling/vim-airline'
+
+" ctrlp.vim
+Bundle 'kien/ctrlp.vim'
+
+" Ag
+Bundle 'rking/ag.vim'
 
 " Autoupdate all plugins
 " autocmd VimEnter * exe ":BundleInstall!\<CR>"
 
 
 " Automatically detect file types.
-filetype plugin indent on      
+filetype plugin indent on
 
 "Enable syntax hl
 syntax enable
