@@ -5,4 +5,4 @@
 
 """
 
-# vi: ft=python:tw=0:ts=4
+# vi: ft=python:tw=0:ts=4:sw=4

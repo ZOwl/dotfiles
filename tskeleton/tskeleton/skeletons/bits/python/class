@@ -1,6 +1,0 @@
-<+input('s:name?!', 'Name: ')+>
-iclass <+s:name+>(<+CURSOR+>):
-    """
-    <+DOC+>
-    """
-    <++>
