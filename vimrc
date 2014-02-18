@@ -464,9 +464,6 @@ Bundle "kchmck/vim-coffee-script"
 " Handlebars
 Bundle "nono/vim-handlebars"
 
-" (HT|X)ml tool
-Bundle "ragtag.vim"
-
 " Haml
 Bundle "tpope/vim-haml"
 
@@ -521,8 +518,7 @@ Bundle "pep8"
 let g:pep8_map='<leader>8'
 " Bundle "pyflakes"
 
-" Syntax highlight
-Bundle "cucumber.zip"
+" Markdown
 Bundle "Markdown"
 
 " Git integration
@@ -641,6 +637,15 @@ Bundle 'kien/ctrlp.vim'
 
 " Ag
 Bundle 'rking/ag.vim'
+
+" context_filetype
+Bundle 'Shougo/context_filetype.vim'
+
+" Emmet
+Bundle 'mattn/emmet-vim'
+
+" EasyMotion
+" Bundle 'Lokaltog/vim-easymotion'
 
 " Autoupdate all plugins
 " autocmd VimEnter * exe ":BundleInstall!\<CR>"
