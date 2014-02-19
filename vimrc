@@ -559,6 +559,7 @@ let Tlist_Use_Right_Window=1
 
 " NerdTree
 Bundle 'scrooloose/nerdtree'
+let NERDTreeIgnore = ['\.pyc$']
 
 " vim-nerdtree-tabs
 Bundle 'jistr/vim-nerdtree-tabs'
@@ -634,6 +635,7 @@ Bundle 'bling/vim-airline'
 
 " ctrlp.vim
 Bundle 'kien/ctrlp.vim'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
 " Ag
 Bundle 'rking/ag.vim'
