@@ -451,9 +451,6 @@ Bundle 'gmarik/vundle'
 " Color scheme
 " Bundle "wgibbs/vim-irblack"
 
-" Syntax checking
-Bundle "scrooloose/syntastic"
-
 " RoR
 Bundle "rails.vim"
 Bundle "thoughtbot/vim-rspec"
@@ -645,6 +642,21 @@ Bundle 'Shougo/context_filetype.vim'
 
 " Emmet
 Bundle 'mattn/emmet-vim'
+
+" vim-emblem
+Bundle 'heartsentwined/vim-emblem'
+
+" vim-less
+Bundle 'groenewege/vim-less'
+
+" vim-slim
+Bundle 'slim-template/vim-slim.git'
+
+" vim-stylus
+Bundle 'vim-stylus'
+
+" Dockerfile
+Bundle 'ekalinin/Dockerfile.vim'
 
 " EasyMotion
 " Bundle 'Lokaltog/vim-easymotion'
