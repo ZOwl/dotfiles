@@ -1,9 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Get out of VI's compatible mode..
-set nocompatible
-
 "Sets how many lines of history VIM har to remember
 set history=400
 
@@ -70,7 +67,7 @@ endif
 
 "Omni menu colors
 hi Pmenu guibg=#333333
-hi PmenuSel guibg=#555555 guifg=#ffffffI
+hi PmenuSel guibg=#555555 guifg=#ffffff
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM userinterface
@@ -130,7 +127,7 @@ set hlsearch
 set laststatus=2
 
 function! CurDir()
-   let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
+   let curdir = substitute(getcwd(), '/Users/haozhong/', "~/", "g")
    return curdir
 endfunction
 
@@ -410,6 +407,7 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 "Paste toggle - when pasting something in, don't indent.
 set pastetoggle=<F3>
+inoremap <S-Insert> <ESC>"+p`]a
 
 "Remove indenting on empty lines
 map <F2> :%s/\s*$//g<cr>:noh<cr>''
@@ -427,253 +425,283 @@ endfunction
 map <leader>a <esc>:call AddHeadMsg()<cr><esc>:$<esc>o
 map <leader>u <esc>:/# *Last modified: /s@:.*$@\=strftime(": %Y-%m-%d %H:%M")@<cr>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vundle init
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let root = '~/.vim/bundle'
-if !isdirectory(expand(root).'/vundle')
-  exec '!git clone http://github.com/gmarik/vundle.git '.root.'/vundle'
-endif
-
-runtime macros/matchit.vim
-
-exec 'set rtp+='.root.'/vundle'
-
-call vundle#rc(root)
-
-" Let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Color scheme
-" Bundle "wgibbs/vim-irblack"
-
-" RoR
-Bundle "rails.vim"
-Bundle "thoughtbot/vim-rspec"
-
-" CoffeeScript
-Bundle "kchmck/vim-coffee-script"
-
-" Handlebars
-Bundle "nono/vim-handlebars"
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <Leader>z :ZoomToggle<CR>
 
 " Haml
-Bundle "tpope/vim-haml"
+" Bundle "tpope/vim-haml"
 
 " Javascript
-Bundle "pangloss/vim-javascript"
-au FileType javascript so ~/.vim/bundle/vim-javascript/syntax/javascript.vim
-function! JavaScriptFold()
-  setl foldmethod=syntax
-  setl foldlevelstart=1
-  syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+" Bundle "pangloss/vim-javascript"
+"au FileType javascript so ~/.vim/bundle/vim-javascript/syntax/javascript.vim
+"function! JavaScriptFold()
+"  setl foldmethod=syntax
+"  setl foldlevelstart=1
+"  syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+"
+"  function! FoldText()
+"    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+"  endfunction
+"  setl foldtext=FoldText()
+"endfunction
+"au FileType javascript setl shiftwidth=4
+"au FileType javascript setl tabstop=4
+"au FileType javascript call JavaScriptFold()
+"au FileType javascript setl fen
+"au FileType javascript imap <c-t> console.log();<esc>hi
+"au FileType javascript imap <c-a> alert();<esc>hi
+"au FileType javascript setl nocindent
+"au FileType javascript inoremap <buffer> $r return
+"au FileType javascript inoremap <buffer> $d //<cr>//<cr>//<esc>ka<space>
+"au FileType javascript inoremap <buffer> $c /**<cr><space><cr>**/<esc>ka
+"
+"" Bundle "hallettj/jslint.vim"
+"" nmap <leader>jc :JSLintToggle<cr>
+"" let g:JSLintHighlightErrorLine=0
+"
+"Bundle 'editorconfig/editorconfig-vim'
+"Bundle 'maksimr/vim-jsbeautify'
+"Bundle 'einars/js-beautify'
+"
+"nmap <leader>k :call JsBeautify()<cr>
+"
+"" CVim
+"Bundle "c.vim--Schellong"
+"let g:C_AuthorName = "zhonghao"
+"let g:C_AuthorRef  = "ZOwl"
+"let g:C_Email      = "zhhbug@gmail.com"
+"let g:C_Company    = "www.bit.edu.cn"
+"
+"" Python
+"Bundle "python.vim"
+"" Bundle "python_check_syntax.vim"
+"" let g:pcs_hotkey                      " run the checker, the default is  cs
+"" let g:pcs_check_when_saving = false   " when true, the checker automaticlly run while saving, the default is true
+"Bundle "virtualenv.vim"
+"Bundle "pep8"
+"let g:pep8_map='<leader>8'
+"
+"" Markdown
+"Bundle "Markdown"
+"
+"" Bundle "b4winckler/vim-objc"
+"" Bundle 'eraserhd/vim-ios.git'
+"
+"
+"" Git integration
+"Bundle "git.zip"
+"Bundle "fugitive.vim"
+"
+"" Utility
+"Bundle "surround.vim"
+"Bundle "Align"
+"
+"" Indent Object
+"Bundle "michaeljsmith/vim-indent-object"
+"
+"
+"" Tagbar
+"Bundle "majutsushi/tagbar"
+"let g:tagbar_type_objc = {
+"    \ 'ctagstype' : 'ObjectiveC',
+"    \ 'kinds'     : [
+"        \ 'i:interface',
+"        \ 'I:implementation',
+"        \ 'p:Protocol',
+"        \ 'm:Object_method',
+"        \ 'c:Class_method',
+"        \ 'v:Global_variable',
+"        \ 'F:Object field',
+"        \ 'f:function',
+"        \ 'p:property',
+"        \ 't:type_alias',
+"        \ 's:type_structure',
+"        \ 'e:enumeration',
+"        \ 'M:preprocessor_macro',
+"    \ ],
+"    \ 'sro'        : ' ',
+"    \ 'kind2scope' : {
+"        \ 'i' : 'interface',
+"        \ 'I' : 'implementation',
+"        \ 'p' : 'Protocol',
+"        \ 's' : 'type_structure',
+"        \ 'e' : 'enumeration'
+"    \ },
+"    \ 'scope2kind' : {
+"        \ 'interface'      : 'i',
+"        \ 'implementation' : 'I',
+"        \ 'Protocol'       : 'p',
+"        \ 'type_structure' : 's',
+"        \ 'enumeration'    : 'e'
+"    \ }
+"\ }
+"
+"
+"" VimCommander
+"Bundle "vimcommander"
+"noremap <silent> <F11> :cal VimCommanderToggle()<CR> 
+"
+"" Task List
+"Bundle "TaskList.vim"
+"map <leader>td <Plug>TaskList
+"
+"" tskeleton
+"Bundle "https://github.com/tomtom/tlib_vim.git"
+"Bundle "https://github.com/tomtom/tskeleton_vim.git"
+"au BufNewFile *.py 0r ~/.tskeleton/skeletons/python.py | let IndentStyle = "python"
+"au BufNewFile *.sh 0r ~/.tskeleton/skel/sh.skel | let IndentStyle = "sh"
+"au BufNewFile *.c 0r ~/.tskeleton/skel/c.skel | let IndentStyle = "c"
+"
+"" Conque
+"" Bundle "Conque-Shell"
+"
+"
+"
+"" Latex Suite
+"Bundle 'vim-latex/vim-latex'
+"let g:tex_flavor='latex'
+"set iskeyword+=:
+"
+"
+"" vim-trailing-whitespace
+"Bundle 'bronson/vim-trailing-whitespace'
+"
+"" vim-airline
+"Bundle 'bling/vim-airline'
+"
+"" ctrlp.vim
+"Bundle 'kien/ctrlp.vim'
+"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+"
+"" context_filetype
+"Bundle 'Shougo/context_filetype.vim'
+"
+"
+"" Dockerfile
+"Bundle 'ekalinin/Dockerfile.vim'
+"
+"
+"" Scala
+"Bundle 'derekwyatt/vim-scala'
+"
+"
+"" EasyMotion
+"" Bundle 'Lokaltog/vim-easymotion'
+"
+"" vue
+"Bundle 'posva/vim-vue'
+"
+"" Dart
+"Bundle 'dart-lang/dart-vim-plugin'
 
-  function! FoldText()
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-  endfunction
-  setl foldtext=FoldText()
-endfunction
-au FileType javascript setl shiftwidth=4
-au FileType javascript setl tabstop=4
-au FileType javascript call JavaScriptFold()
-au FileType javascript setl fen
-au FileType javascript imap <c-t> console.log();<esc>hi
-au FileType javascript imap <c-a> alert();<esc>hi
-au FileType javascript setl nocindent
-au FileType javascript inoremap <buffer> $r return
-au FileType javascript inoremap <buffer> $d //<cr>//<cr>//<esc>ka<space>
-au FileType javascript inoremap <buffer> $c /**<cr><space><cr>**/<esc>ka
+if &compatible
+  set nocompatible
+endif
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
-" Bundle "hallettj/jslint.vim"
-" nmap <leader>jc :JSLintToggle<cr>
-" let g:JSLintHighlightErrorLine=0
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
 
-Bundle 'editorconfig/editorconfig-vim'
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'einars/js-beautify'
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('Shougo/deoplete.nvim')
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
 
-nmap <leader>k :call JsBeautify()<cr>
+  if has('win32') || has('win64')
+    call dein#add('tbodt/deoplete-tabnine', { 'build': 'powershell.exe .\install.ps1' })
+  else
+    call dein#add('tbodt/deoplete-tabnine', {
+          \ 'build': './install.sh',
+          \ 'hook_add': "
+          \ let g:deoplete#enable_at_startup = 1
+          \ "})
+  endif
 
-" CVim
-Bundle "c.vim--Schellong"
-let g:C_AuthorName = "zhonghao"
-let g:C_AuthorRef  = "ZOwl"
-let g:C_Email      = "zhhbug@gmail.com"
-let g:C_Company    = "www.bit.edu.cn"
+  call dein#add('wsdjeg/dein-ui.vim')
 
-" Python
-Bundle "python.vim"
-" Bundle "python_check_syntax.vim"
-" let g:pcs_hotkey                      " run the checker, the default is  cs
-" let g:pcs_check_when_saving = false   " when true, the checker automaticlly run while saving, the default is true
-Bundle "virtualenv.vim"
-Bundle "pep8"
-let g:pep8_map='<leader>8'
-" Bundle "pyflakes"
+  " RoR
+  call dein#add("vim-scripts/rails.vim")
+  call dein#add("thoughtbot/vim-rspec")
 
-" Markdown
-Bundle "Markdown"
+  " Emmet
+  call dein#add('mattn/emmet-vim')
+  let g:user_emmet_install_global = 0
+  autocmd FileType html,css EmmetInstall
 
-" Git integration
-Bundle "git.zip"
-Bundle "fugitive.vim"
+  " racer
+  call dein#add('phildawes/racer')
 
-" Utility
-"Bundle "repeat.vim"
-Bundle "surround.vim"
-"Bundle "file-line"
-Bundle "Align"
+  " rust
+  call dein#add('rust-lang/rust.vim')
+  call dein#add('racer-rust/vim-racer')
+  call dein#add('cespare/vim-toml')
 
-" Project
-Bundle "project.tar.gz"
-" Set project-flags
-let g:proj_flags="imstg"
-" Project-adding-mappings
-nmap <leader>j :Project
+  " NerdTree
+  call dein#add('scrooloose/nerdtree', {
+        \ 'hook_add': "
+        \ let NERDTreeIgnore = ['\.pyc$']
+        \ "})
+  
+  " vim-nerdtree-tabs
+  call dein#add('jistr/vim-nerdtree-tabs')
+  " map <Leader>n <plug>NERDTreeTabsToggle<CR>
+  
+  " NerdCommenter
+  " call dein#add("ddollar/nerdcommenter")
 
-" Indent Object
-Bundle "michaeljsmith/vim-indent-object"
+  " tComment
+  call dein#add("tomtom/tcomment_vim", {
+        \ 'hook_add': "
+        \ nmap // :TComment<CR>
+        \ vmap // :TComment<CR>
+        \ "})
 
-" tComment
-Bundle "tComment"
-nnoremap // :TComment<CR>
-vnoremap // :TComment<CR>
+  " Command-T
+  call dein#add("vim-scripts/Command-T")
 
-" Yank Ring
-Bundle "YankRing.vim"
-map <leader>y :YRShow<cr>
+  " BufExplorer
+  call dein#add("vim-scripts/bufexplorer.zip")
 
-" Tag List
-Bundle "vim-scripts/taglist.vim"
-let Tlist_Ctags_Cmd='/usr/bin/ctags'
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Right_Window=1
+  " FencView
+  call dein#add('vim-scripts/FencView.vim', {
+        \ 'hook_add': "
+        \ let g:fencview_autodetect = 0\n
+        \ let g:fencview_checklines = 10\n
+        \ nmap fenc :FencAutoDetect
+        \ let g:fencview_auto_patterns='*.txt,*.htm{l\=},*.php,*.c,*.py'
+        \ "})
 
-" NerdTree
-Bundle 'scrooloose/nerdtree'
-let NERDTreeIgnore = ['\.pyc$']
+  " Go
+  call dein#add('fatih/vim-go')
 
-" vim-nerdtree-tabs
-Bundle 'jistr/vim-nerdtree-tabs'
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+  " vim-airline
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
 
-" NerdCommenter
-Bundle "ddollar/nerdcommenter"
+  " context_filetype
+  call dein#add('Shougo/context_filetype.vim')
 
-" BufExplorer
-Bundle "bufexplorer.zip"
-
-" VimCommander
-Bundle "vimcommander"
-noremap <silent> <F11> :cal VimCommanderToggle()<CR> 
-
-" Zoomwin
-Bundle "ZoomWin"
-noremap <LocalLeader>o :ZoomWin<CR>
-vnoremap <LocalLeader>o <C-C>:ZoomWin<CR>
-inoremap <LocalLeader>o <C-O>:ZoomWin<CR>
-noremap <leader><leader> :ZoomWin<CR>
-
-" Task List
-Bundle "TaskList.vim"
-map <leader>td <Plug>TaskList
-
-" tskeleton
-Bundle "https://github.com/tomtom/tlib_vim.git"
-Bundle "https://github.com/tomtom/tskeleton_vim.git"
-au BufNewFile *.py 0r ~/.tskeleton/skeletons/python.py | let IndentStyle = "python"
-au BufNewFile *.sh 0r ~/.tskeleton/skel/sh.skel | let IndentStyle = "sh"
-au BufNewFile *.c 0r ~/.tskeleton/skel/c.skel | let IndentStyle = "c"
-
-" Conque
-" Bundle "Conque-Shell"
-
-" Command-T
-" Bundle "Command-T"
-
-" FencView
-Bundle 'FencView.vim'
-let g:fencview_autodetect = 0
-let g:fencview_checklines = 10
-nmap fenc :FencAutoDetect
-let g:fencview_auto_patterns='*.txt,*.htm{l\=},*.php,*.c,*.py'
-
-" Latex Suite
-Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
-let g:tex_flavor='latex'
-set iskeyword+=:
-
-" rust
-Bundle 'wting/rust.vim'
-
-" YouCompleteMe
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'davidhalter/jedi'
-Bundle 'scrooloose/syntastic'
-let g:syntastic_ignore_files=[".*\.py$"]
-
-" UltiSnips
-Bundle 'SirVer/ultisnips'
-let g:UltiSnipsExpandTrigger="<C-E>"
-
-" vim-snippets
-Bundle 'honza/vim-snippets'
-
-" vim-trailing-whitespace
-Bundle 'bronson/vim-trailing-whitespace'
-
-" vim-airline
-Bundle 'bling/vim-airline'
-
-" ctrlp.vim
-Bundle 'kien/ctrlp.vim'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-
-" Ag
-Bundle 'rking/ag.vim'
-
-" context_filetype
-Bundle 'Shougo/context_filetype.vim'
-
-" Emmet
-Bundle 'mattn/emmet-vim'
-
-" vim-emblem
-Bundle 'heartsentwined/vim-emblem'
-
-" vim-less
-Bundle 'groenewege/vim-less'
-
-" vim-slim
-Bundle 'slim-template/vim-slim.git'
-
-" vim-stylus
-Bundle 'vim-stylus'
-
-" Dockerfile
-Bundle 'ekalinin/Dockerfile.vim'
-
-" EasyMotion
-" Bundle 'Lokaltog/vim-easymotion'
-
-" Autoupdate all plugins
-" autocmd VimEnter * exe ":BundleInstall!\<CR>"
-
+  call dein#end()
+  call dein#save_state()
+endif
 
 " Automatically detect file types.
 filetype plugin indent on
 
 "Enable syntax hl
 syntax enable
-
-" So wired
-filetype off
-filetype on
-
-syntax on
-
